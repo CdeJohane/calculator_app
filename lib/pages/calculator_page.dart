@@ -51,6 +51,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
       setState(() {
         total = "0";
         input = "";
+        display = "0";
       });
     }
   }
