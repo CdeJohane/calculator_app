@@ -33,9 +33,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
   }
   void removeDigit(){
       setState(() {
-        if(!total.isEmpty){
-          input = input.substring(0, total.length-1);
-          if(total.length == 0){
+        if(!input.isEmpty){
+          input = input.substring(0, input.length-1);
+          if(input.length == 0){
             input = "0";
           }
         } else{
