@@ -15,7 +15,10 @@ class _CalculatorPageState extends State<CalculatorPage> {
   CalculateController myCalculateController = CalculateController();
   TextEditingController myTextEditingController = TextEditingController();
   String total = "0";
-  
+  String input = "";
+  String display = "";
+
+  String currOperator = "";
 
   // method to check its printed
   void isPrinted(int index){
@@ -23,23 +26,86 @@ class _CalculatorPageState extends State<CalculatorPage> {
   }
   void addDigit(int number){
     setState(() {
-      total = total + number.toString();
+      input = input + number.toString();
+      display = input;
     });
+
   }
   void removeDigit(){
-    if(!total.isEmpty){
       setState(() {
-        total = total.substring(0, total.length-1);
+        if(!total.isEmpty){
+          input = input.substring(0, total.length-1);
+          if(total.length == 0){
+            input = "0";
+          }
+        } else{
+          input = "0";
+        }
+        display = input;
       });
-    }
+    
   }
   void clearDigit() {
     if (!total.isEmpty) {
       myCalculateController.setTotal(0);
       setState(() {
-        total = "";
+        total = "0";
+        input = "";
       });
     }
+  }
+  void calculate(String operator){
+    int secondNum =0;
+    if(!total.isEmpty){
+      secondNum = int.parse(input);
+    }else{
+      return;
+    }
+
+    setState(() {
+      switch(currOperator){
+        case "+":
+          total = myCalculateController.addNum(secondNum);
+          display = total;
+          input = "";
+          break;
+        case "-":
+          total = myCalculateController.subNum(secondNum);
+          display = total;
+          input = "";
+          break;
+        case "/":
+          if(secondNum==0){
+            display = "undefined";
+            myCalculateController.setTotal(0);
+            total = "0";
+            input = "";
+            break;
+          }
+          total = myCalculateController.divNum(secondNum);
+          display = total;
+          input = "";
+          break;
+        case "*":
+          total = myCalculateController.mulNum(secondNum);
+          display = total;
+          input = "";
+          break;
+        case "=":
+          myCalculateController.setTotal(secondNum);
+          display = total;
+          input = "";
+          break;
+        case "":
+          myCalculateController.setTotal(secondNum);
+          display = total;
+          input = "";
+          break;
+        default:
+          print("ERROR");
+      }
+    });
+    currOperator = operator;
   }
 
 
@@ -68,7 +134,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   ),
                   child: Center(
                     child: Text(
-                      total,
+                      display,
                       textAlign: TextAlign.end,
                       style: TextStyle(
                         fontSize: 55,
@@ -231,6 +297,130 @@ class _CalculatorPageState extends State<CalculatorPage> {
                           child: Icon(
                             Icons.cancel,
                             color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    );
+                  }else if (index == 3){
+                    return Container(
+                      margin: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(90),
+                          border: Border.all(
+                            width: 3,
+                            color: Colors.black26,
+                          )),
+                      child: GestureDetector(
+                        onTap: () {
+                          calculate("+");
+                        },
+                        child: Center(
+                          child: Text(
+                            "+",
+                            style: TextStyle(
+                              fontSize: 30,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  else if (index == 7) {
+                    return Container(
+                      margin: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(90),
+                          border: Border.all(
+                            width: 3,
+                            color: Colors.black26,
+                          )),
+                      child: GestureDetector(
+                        onTap: () {
+                          calculate("-");
+                        },
+                        child: Center(
+                          child: Text(
+                            "-",
+                            style: TextStyle(
+                              fontSize: 30,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  else if (index == 11) {
+                    return Container(
+                      margin: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(90),
+                          border: Border.all(
+                            width: 3,
+                            color: Colors.black26,
+                          )),
+                      child: GestureDetector(
+                        onTap: () {
+                          calculate("/");
+                        },
+                        child: Center(
+                          child: Text(
+                            "/",
+                            style: TextStyle(
+                              fontSize: 30,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  else if (index == 15) {
+                    return Container(
+                      margin: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(90),
+                          border: Border.all(
+                            width: 3,
+                            color: Colors.black26,
+                          )),
+                      child: GestureDetector(
+                        onTap: () {
+                          calculate("*");
+                        },
+                        child: Center(
+                          child: Text(
+                            "*",
+                            style: TextStyle(
+                              fontSize: 30,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  else if (index == 19) {
+                    return Container(
+                      margin: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(90),
+                          border: Border.all(
+                            width: 3,
+                            color: Colors.black26,
+                          )),
+                      child: GestureDetector(
+                        onTap: () {
+                          calculate("=");
+                        },
+                        child: Center(
+                          child: Text(
+                            "=",
+                            style: TextStyle(
+                              fontSize: 30,
+                            ),
                           ),
                         ),
                       ),

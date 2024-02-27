@@ -1,5 +1,6 @@
 class CalculateController{
-  int total = 0; 
+  int total = 0;
+
   CalculateController(){
     total =0;
   }
